@@ -17,8 +17,7 @@ data from an infinite scrolling page (that kind of page that loads more content 
 you're at the bottom).
 
 An explanation of this project can be found on
-[this post on my webpage](https://foo-manroot.github.io/post/scraping/twitter
-/2017/09/05/scraping-twitter.html).
+[this post my webpage](https://foo-manroot.github.io/post/scraping/twitter/2017/09/05/scraping-twitter.html).
 
 Of course, if the scraper is useful to you, you are free to use and modifiy it (under the
 terms stated on the license, if there's one).
