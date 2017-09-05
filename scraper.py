@@ -8,7 +8,8 @@ import urllib2 \
     , re \
     , html2text \
     , logging \
-    , json
+    , json \
+    , ssl
 
 from datetime import datetime
 from bs4 import BeautifulSoup
@@ -248,6 +249,12 @@ def get_next_page (username, max_position, full_html
         )
         return None
 
+    except ssl.SSLError as e:
+        logger.error ("Connection getting tweets of '" + username + "' => "
+                        + str (e)
+        )
+        return None
+
 
     resp_map = json.JSONDecoder ().decode (response)
 
@@ -320,6 +327,11 @@ def get_user_tweets (username, max_count = 10, older_age = None):
         )
         return None
 
+    except ssl.SSLError as e:
+        logger.error ("Connection getting tweets of '" + username + "' => "
+                        + str (e)
+        )
+        return None
 
     data = process_html (html, max_count, older_age)
     tweet_map = data ["tweet_map"]
@@ -409,6 +421,11 @@ def get_update_info (username):
         )
         return None
 
+    except ssl.SSLError as e:
+        logger.error ("Connection getting tweets of '" + username + "' => "
+                        + str (e)
+        )
+        return None
 
     parsed = BeautifulSoup (response, "html.parser")
     max_position = parsed.select (".stream-container") [0]["data-max-position"]
@@ -459,6 +476,11 @@ def get_new_tweets (username, min_position, full_html):
         )
         return None
 
+    except ssl.SSLError as e:
+        logger.error ("Connection getting tweets of '" + username + "' => "
+                        + str (e)
+        )
+        return None
 
     resp_map = json.JSONDecoder ().decode (response)
 
