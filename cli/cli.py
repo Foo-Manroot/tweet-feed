@@ -301,14 +301,20 @@ def poll (users, send_notif = False):
             logger.error ("Error accessing DBus")
             notif_err = True
 
+    del_items = []
     # Stores the current html and max_position
     for u in users:
+        logger.info ("Getting initial data from '" + u + "'")
         info [u] = scraper.get_update_info (u)
 
         # If there has been some error fetching content, no updates can be done
         if not info [u]:
-            logger.error ("No tweet from '" + u + "' could've been gathered")
-            del info [u]
+            logger.error ("No tweet from '" + u + "' couldn't be obtained")
+            # Marks the item to be removed
+            del_items.append (u)
+
+    # Deletes all the marked items
+    users = [ x for x in users if x not in del_items ]
 
     if len (info) <= 0:
         logger.error ("No available info to get updates")
