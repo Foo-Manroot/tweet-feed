@@ -303,7 +303,16 @@ def poll (users, send_notif = False):
 
     # Stores the current html and max_position
     for u in users:
-       info [u] = scraper.get_update_info (u)
+        info [u] = scraper.get_update_info (u)
+
+        # If there has been some error fetching content, no updates can be done
+        if not info [u]:
+            logger.error ("No tweet from '" + u + "' could've been gathered")
+            del info [u]
+
+    if len (info) <= 0:
+        logger.error ("No available info to get updates")
+        return
 
     while True:
         try:
