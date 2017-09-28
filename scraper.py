@@ -11,6 +11,7 @@ import urllib2 \
     , json \
     , ssl
 
+from tqdm import tqdm
 from datetime import datetime
 from bs4 import BeautifulSoup
 
@@ -373,7 +374,7 @@ def get_tweets (users, max_count = 10, older_age = None):
     tweets = {}
     logger = logging.getLogger (__name__)
 
-    for username in users:
+    for username in tqdm (users):
 
         logger.info ("Getting tweets of '" + username + "'")
 

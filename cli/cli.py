@@ -151,7 +151,7 @@ def format_tweet (text, add_tabs = False, strip = False):
         # Converts it to HTML to put it back to text, but without links
         html = markdown (text)
 
-        parsed = BeautifulSoup (html)
+        parsed = BeautifulSoup (html, "lxml")
 
         # As twitter sometimes uses <a> tags to refer to pictures and links, some
         # processing has to be done
@@ -396,7 +396,6 @@ if __name__ == "__main__":
     max_epoch = args.max_epoch
 
     try:
-
         get_tweets (users, max_count, max_epoch)
 
     except KeyboardInterrupt:
