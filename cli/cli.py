@@ -398,12 +398,12 @@ if __name__ == "__main__":
     try:
         get_tweets (users, max_count, max_epoch)
 
+        if args.notify:
+            poll (users, send_notif = True)
+        elif args.watch:
+            poll (users, send_notif = False)
+
     except KeyboardInterrupt:
         logger.info ("Interrupt caught while getting tweets. Cleaning data...")
         logger.info ("All done")
         exit ()
-
-    if args.notify:
-        poll (users, send_notif = True)
-    elif args.watch:
-        poll (users, send_notif = False)
