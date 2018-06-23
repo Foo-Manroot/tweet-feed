@@ -55,10 +55,10 @@ def parse_args ():
     """
     parser = argparse.ArgumentParser ()
 
-    parser.add_argument ("users"
+    parser.add_argument ("users_cfg"
                         , type = argparse.FileType ("r")
                         , default = sys.stdin
-                        , help = "File with the usernames from whose tweets will be "
+                        , help = "File with the usernames whose tweets will be "
                             "extracted, separated by new lines"
     )
 
@@ -377,7 +377,7 @@ if __name__ == "__main__":
     logger = logging.getLogger ("Main")
 
     users = []
-    with args.users as in_file:
+    with args.users_cfg as in_file:
         for line in in_file:
             line = line.rstrip ("\n")
             # Skips comments (everything after //) and empty lines
@@ -388,7 +388,7 @@ if __name__ == "__main__":
 
     logger.info ("Loaded {0} accounts from file '{1}'\n".format (
                     len (users)
-                    , args.users.name
+                    , args.users_cfg.name
                 )
     )
 
