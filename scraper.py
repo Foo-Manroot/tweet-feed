@@ -233,6 +233,7 @@ def get_next_page (username, max_position, full_html
     logger = logging.getLogger (__name__)
     tweet_map = {}
 
+
     logger.info ("Getting more tweets, starting from " + str (max_position))
     try:
         response = urllib2.urlopen (
@@ -276,6 +277,7 @@ def get_next_page (username, max_position, full_html
 
     # Checks if the maximum amount of requested data has been extracted
     if n_items < max_count \
+        and resp_map ["has_more_items"] \
         and not data ["older_age_reached"]:
             tweet_map.update (
                 get_next_page (username
