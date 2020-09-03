@@ -23,9 +23,12 @@ Of course, if the scraper is useful to you, you are free to use and modifiy it (
 terms stated on the license, if there's one).
 
 For example, to get the first tweet from a user, you can use the function `get_tweets`,
-that recieves a list with the users (read the docstring for more info), as follows:
+that recieves a list with the users (read the docstring for more info), as follows
+( **REMEMBER TO ALWAYS CALL `scraper.init()` BEFORE SCRAPING DATA** ):
 ```python
 >>> import scraper
+>>> scraper.init ()
+True
 >>> data = scraper.get_tweets (["mzbat"], max_count = 2)
 >>> data
 >>> data
@@ -88,35 +91,67 @@ In that example, two tweets are retrieved and pretty-printed using `json.dumps`.
 The retrieved data is a dictionary with the following format:
 ```python
 {
-    <user>: {
-        <tweet-id>: {
-              "profile_pic": <avatar of the tweet owner>
-            , "permalink": <link to the tweet>
-            , "stats": {
-                  "likes": <number of likes>
-                , "retweets": <number of retweets>
-                , "replies": <number of replies>
+    "<user handle>": {
+        "id": "<user ID>"
+        , "rest_id": "<user ID to perform API requests>"
+        , "created_at": "<date when the user created its account>"
+        , "description": "<user's bio>"
+        , "fast_followers_count": <NUM>
+        , "favourites_count": <NUM>
+        , "followers_count": <NUM>
+        , "friends_count": <NUM>
+        , "has_custom_timelines": <BOOL>
+        , "is_translator": <BOOL>
+        , "listed_count": <NUM>
+        , "location": "<location string>",
+        , "media_count": <NUM>
+        , "name": "<name that the user has set (not its handle, which is unique)>",
+        , "normal_followers_count": <NUM>
+        , "pinned_tweet_ids_str": [
+              "<tweet-id>"
+        ],
+        , "profile_image_url": "<url of the profile image>"
+        , "protected": "<BOOL>"
+        , "screen_name": "<user handle>"
+        , "statuses_count": <NUM>,
+        , "translator_type": "<STRING>"
+        , "url": "<homepage set by the user>",
+        , "verified": <BOOL>
+        # Tweet list, ordered from newer (position 0) to older (position n)
+        , "tweets": [
+            {
+                "tweet_id": "<tweet-id>"
+                , "profile_pic": "<avatar URL of the tweet owner>"
+                , "permalink": "<link to the tweet>"
+                , "stats": {
+                      "likes": <number of likes>
+                    , "retweets": <number of retweets>
+                    , "replies": <number of replies>
+                }
+                , "text": "<plain text of the tweet>"
+                , "tweet_age": <(NUM) timestamp of the tweet, in UNIX epoch format>
+                , "pinned": <BOOL>
+                , "conversation": <conversation-id>
+                , "user": {
+                    # Information of the owner of the tweet (important if it's a retweet)
+                      "username": <account name (twitter.com/username)>
+                    , "displayname": <nickname for the user>
+                    , "uid": <user id>
+                    , "avatar": <profile pic>
+                }
+                , "retweet": <indication to know if it's a retweet>
+                # Only if "retweet" is True
+                , "retweet_info" {
+                      "retweet_id": <id of the retweet>
+                    , "retweeter": <username who retweeted (the one whose data is being extracted)>
+                }
             }
-            , "tweet_id": <tweet-id>
-            , "text": <text of the tweet>
-            , "tweet_age": <timestamp of the tweet, in UNIX epoch format>
-            , "pinned": <indication to know if the tweet is pinned>
-            , "conversation": <conversation-id>
-            , "user": {
-                # Information of the owner of the tweet (important if it's a retweet)
-                  "username": <account name (twitter.com/username)>
-                , "displayname": <nickname for the user>
-                , "uid": <user id>
-                , "avatar": <profile pic>
-            }
-            , "retweet": <indication to know if it's a retweet>
-            # Only if "retweet" is True
-            , "retweet_info" {
-                  "retweet_id": <id of the retweet>
-                , "retweeter": <username who retweeted (the one whose data is being extracted)>
-            }
-        }
         # ... (more tweeets from the user)
+        ]
+        , "cursor": {
+            "top": "<ID of the most recent tweet recovered>"
+            , "bottom": "<ID of the oldest tweet recovered>"
+        }
     }
     # ... (more users and their tweets)
 }

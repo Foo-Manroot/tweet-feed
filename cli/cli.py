@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -9,12 +9,11 @@ import scraper \
     , logging \
     , re \
     , time \
-    , notify2 \
-    , html2text
+    , notify2
 
 
 from bs4 import BeautifulSoup
-from markdown import markdown
+#from markdown import markdown
 from datetime import datetime
 
 # For the argument parsing
@@ -259,24 +258,7 @@ def print_tweets (tweet_map):
                         , tweet ["stats"]["likes"]
                     )
 
-        print msg
-
-
-def get_tweets (users, max_count, max_epoch):
-    """
-    Gets the tweets of all the users and dumps them on STDOUT
-
-    Args:
-        -> users: A list with all the usernames to get tweets from
-
-        -> max_count: Maximum number of tweets to be extracted for each user
-
-        -> max_epoch: Maximum epoch (UNIX timestamp) of the older tweets to retrieve
-
-    """
-    data = scraper.get_tweets (users, max_count, max_epoch)
-
-    print_tweets (data)
+        print (msg)
 
 
 
@@ -374,9 +356,9 @@ if __name__ == "__main__":
     else:
         logging.basicConfig (level = logging.WARNING, format = FORMAT)
 
-    logger = logging.getLogger ("Main")
+    logger = logging.getLogger (__name__)
 
-    users = []
+    usernames = []
     with args.users_cfg as in_file:
         for line in in_file:
             line = line.rstrip ("\n")
@@ -384,24 +366,33 @@ if __name__ == "__main__":
             line = re.sub ("[ \t]*//.*$", "", line)
 
             if line:
-                users.append (line)
+                usernames.append (line)
 
     logger.info ("Loaded {0} accounts from file '{1}'\n".format (
-                    len (users)
+                    len (usernames)
                     , args.users_cfg.name
                 )
     )
 
-    max_count = args.max_count
+    max_count = args.max_count if args.max_count else 10
     max_epoch = args.max_epoch
 
+    # Initializes the authZ before attempting to retrieve any tweet
+    sc = scraper.Scraper ()
     try:
-        get_tweets (users, max_count, max_epoch)
+        data = sc.get_tweets (usernames, max_count, max_epoch)
+
+        # Prints them by usermame, not by chronological order
+        for k in data:
+            user_info = data [k]
+            print ("\n=============\nTweets from " +  user_info ["name"] + " - @" + k)
+            for tweet in user_info ["tweets"]:
+                print ("\n----> " + tweet ["text"])
 
         if args.notify:
-            poll (users, send_notif = True)
+            poll (usernames, send_notif = True)
         elif args.watch:
-            poll (users, send_notif = False)
+            poll (usernames, send_notif = False)
 
     except KeyboardInterrupt:
         logger.info ("Interrupt caught while getting tweets. Cleaning data...")
