@@ -23,13 +23,11 @@ Of course, if the scraper is useful to you, you are free to use and modifiy it (
 terms stated on the license, if there's one).
 
 For example, to get the first tweet from a user, you can use the function `get_tweets`,
-that recieves a list with the users (read the docstring for more info), as follows
-( **REMEMBER TO ALWAYS CALL `scraper.init()` BEFORE SCRAPING DATA** ):
+that recieves a list with the users (read the docstring for more info), as follows:
 ```python
 >>> import scraper
->>> scraper.init ()
-True
->>> data = scraper.get_tweets (["mzbat"], max_count = 2)
+>>> s = scraper.Scraper ()
+>>> data = s.get_tweets (["mzbat"], max_count = 2)
 >>> data
 >>> data
 {'mzbat': {'902887483704320004': {'permalink': u'/Rainmaker1973/status/902887483704320004', 'stats': {'likes': 6407, 'retweets': 3659, 'replies': 64}, 'conversation': 902887483704320004, 'text': u'A really cool visual explanation of how potential &amp; kinetic energy are\nexchanged on a trampoline [http://buff.ly/2qhkllZ\xa0](https://t.co/a4NepKyZnj\n"http://buff.ly/2qhkllZ"\n)[pic.twitter.com/gAR1WWBHiu](https://t.co/gAR1WWBHiu)\n\n', 'tweet_age': 1504100125, 'pinned': False, 'retweet_info': {'retweet_id': u'904701461153681408', 'retweeter': u'mzbat'}, 'user': {'username': u'Rainmaker1973', 'displayname': u'Massimo', 'uid': 177101260, 'avatar': u'https://pbs.twimg.com/profile_images/686298118904786944/H4aoP8vA_bigger.jpg'}, 'tweet_id': '902887483704320004', 'retweet': True}, '720999941225738240': {'profile_pic': u'https://pbs.twimg.com/profile_images/683177128943337472/4CSt778e_400x400.jpg', 'permalink': u'/mzbat/status/720999941225738240', 'stats': {'likes': 3068, 'retweets': 854, 'replies': 67}, 'tweet_id': '720999941225738240', 'text': u'A dude told me I hacked like a girl. I told him if he popped shells a little\nfaster, he could too.[pic.twitter.com/PgiyYw41oo](https://t.co/PgiyYw41oo)\n\n', 'tweet_age': 1460734756, 'pinned': True, 'conversation': 720999941225738240, 'user': {'username': u'mzbat', 'displayname': u'b\u0360\u035d\u0344\u0350\u0310\u035d\u030a\u0341a\u030f\u0344\u0343\u0305\u0302\u0313\u030f\u0304t\u0352', 'uid': 253608265, 'avatar': u'https://pbs.twimg.com/profile_images/683177128943337472/4CSt778e_bigger.jpg'}, 'retweet': False}}}
